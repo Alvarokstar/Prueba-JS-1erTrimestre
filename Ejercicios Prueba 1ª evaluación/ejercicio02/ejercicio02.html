@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 02</title>
+    <style>
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+    <!--cambia_cuenta.php, Alvaro5-->
+    <!--El comentario de arriba era para probar con la contraseña y sin tener el php inventado para que no me de file not found como error en el buscador-->
+
+    <h2>Inicio de sesión</h2>
+    <form action="cambia_cuenta.php" method="post" id="formulario">
+        <label for="sesion">¿Cuándo quieres que Windows te vuelva a pedir que inicies la sesión?</label>
+        <select name="sesion" id="sesion">
+            <option value="accept">Cuando el PC se activa tras haber estado en suspensión</option>
+            <option value="decline">Nunca</option>
+        </select>
+
+        <h2>Contraseña</h2>
+        <label for="password">Nueva contraseña: </label>
+        <input type="password" name="password" id="password">
+        <span class="error" id="passwordError"></span>
+        
+        <br><br>
+
+        <label for="confirmPassword">Repetir contraseña: </label>
+        <input type="password" name="confirmPassword" id="confirmPassword">
+        <span class="error" id="confirmPasswordError"></span>
+        
+        <br><br>
+
+        <label for="reminder">Indicio de contraseña: </label>
+        <textarea name="reminder" id="reminder" placeholder="Introduzca algo relacionado con su contraseña"></textarea>
+        <span class="error" id="reminderError"></span>
+
+        <h2>Privacidad</h2>
+
+        <input type="checkbox" id="privacity" name="privacity">
+        <label for="privacity">Mostrar los detalles de la cuenta en la pantalla de inicio de sesión.</label>
+        
+        <br><br>
+
+        <button type="submit">Aceptar</button>
+    </form>
+
+    <script>
+
+        // Agregamos un listener al formulario para manejar el envío
+        document.getElementById('formulario').addEventListener('submit', function (event) {
+            let valid = true; // Verifica si todos los campos son válidos
+
+            // Obtener elementos del html
+            let password = document.getElementById('password');
+            let confirmPassword = document.getElementById('confirmPassword');
+            let reminder = document.getElementById('reminder');
+            let passwordError = document.getElementById('passwordError');
+            let confirmPasswordError = document.getElementById('confirmPasswordError');
+            let reminderError = document.getElementById('reminderError');
+
+            // Expresiones regulares para validar la contraseña
+            let passRegex = /^[A-Z].{5,}$/; // Empieza con mayúscula y tiene al menos 6 caracteres
+            let digitRegex = /\d/; // Contiene al menos un dígito
+
+            // Validar la contraseña
+            if (!passRegex.test(password.value) || !digitRegex.test(password.value)) {
+                valid = false;
+                passwordError.textContent = "La contraseña debe empezar por una letra mayúscula, tener un mínimo de 6 caracteres y contener, al menos, un dígito.";
+                password.focus();
+                password.select();
+            }
+
+            // Validar que las contraseñas coincidan
+            if (password.value !== confirmPassword.value) {
+                valid = false;
+                confirmPasswordError.textContent = "Las contraseñas escritas no coinciden. Vuelve a intentarlo.";
+                password.focus(); // Coloca el foco en la contraseña principal
+                password.select();
+            }
+
+            // Validar que el indicio no contenga la contraseña
+            if (reminder.value.includes(password.value)) {
+                valid = false;
+                reminderError.textContent = "El indicio de contraseña no puede contener la contraseña.";
+                reminder.focus(); // Coloca el foco en el campo de indicio
+                reminder.select();
+            }
+        });
+    </script>
+</body>
+</html>
