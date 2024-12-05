@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ejercicio 02</title>
+    <!--Estilo CSS para que el mensaje de error aparezca de color rojo y con otro tamaño de fuente-->
     <style>
         .error {
-            color: red;
+            color: red; 
             font-size: 0.9em;
         }
     </style>
@@ -19,7 +20,7 @@
     <h2>Inicio de sesión</h2>
     <form action="cambia_cuenta.php" method="post" id="formulario">
         <label for="sesion">¿Cuándo quieres que Windows te vuelva a pedir que inicies la sesión?</label>
-        <select name="sesion" id="sesion">
+        <select name="session" id="session">
             <option value="accept">Cuando el PC se activa tras haber estado en suspensión</option>
             <option value="decline">Nunca</option>
         </select>
@@ -73,7 +74,7 @@
             if (!passRegex.test(password.value) || !digitRegex.test(password.value)) {
                 valid = false;
                 passwordError.textContent = "La contraseña debe empezar por una letra mayúscula, tener un mínimo de 6 caracteres y contener, al menos, un dígito.";
-                password.focus();
+                password.focus(); // Coloca el foco en la contraseña principal
                 password.select();
             }
 
