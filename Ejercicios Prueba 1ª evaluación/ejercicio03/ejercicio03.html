@@ -1,39 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejercicio03</title>
+    <title>Ejercicio 3 - Descifrar Cifrado César</title>
 </head>
 <body>
 
     <h1>Cifrado César</h1>
-    <form action=""></form>
-
-        <h2>-Descifrar-</h2>
-        <label for="alfabeto">Alfabeto</label>
-        <select name="alfabeto" name="alfabeto">
-            <option>Castellano</option>
-            <option>English</option>
+    <form id="formCifrado">
+        <h2>- Descifrar -</h2>
+        <label for="alfabeto">Alfabeto:</label>
+        <select id="alfabeto" name="alfabeto">
+            <option value="castellano" selected>Castellano</option>
+            <option value="ingles">Inglés</option>
         </select>
         <br><br>
-        <label for="texto"> Texto a descifrar:</label>
-        <textarea name="texto" id="texto" placeholder="Introduzca el texto a descifrar, por ejemplo: Lamine el mejor"></textarea>
+        <label for="texto">Texto a descifrar:</label>
+        <textarea id="texto" placeholder="Introduzca el texto cifrado"></textarea>
         <br><br>
         <label for="rotado">Nivel de rotado:</label>
-        <input type="number" minlength="0" maxlength="25">
+        <input type="number" id="rotado" min="0" placeholder="Nivel de rotado">
         <br><br>
-        <button type="submit">Descifrar</button>
+        <button type="button" id="descifrarBtn">Descifrar</button>
+    </form>
 
+    <div id="resultado"></div>
 
     <script>
+        document.getElementById("descifrarBtn").addEventListener("click", function() {
+            let alfabetoSeleccionado = document.getElementById("alfabeto").value;
+            let textoCifrado = document.getElementById("texto").value.toUpperCase();
+            let nivelRotado = parseInt(document.getElementById("rotado").value, 10);
+            let resultadoDiv = document.getElementById("resultado");
 
-        let Castellano = "[A, B, C, D, E, F, G, H, I, J, K, L, M, N, Ñ, O, P, Q, R, S, T, U, V, W, X, Y, Z]";
-        let English = "[A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z]";
+            if (!textoCifrado || isNaN(nivelRotado)) {
+                resultadoDiv.textContent = "Por favor, introduzca texto y nivel de rotado válido.";
+                return;
+            }
 
-        
+            let alfabetos = {
+                castellano: "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ",
+                ingles: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            };
 
+            let alfabeto = alfabetos[alfabetoSeleccionado];
+            let maxRotacion = alfabeto.length;
+
+            if (nivelRotado < 0 || nivelRotado >= maxRotacion) {
+                resultadoDiv.textContent = `El nivel de rotado debe estar entre 0 y ${maxRotacion - 1}.`;
+                return;
+            }
+
+            let textoDescifrado = "";
+
+            for (let char of textoCifrado) {
+                let index = alfabeto.indexOf(char);
+                if (index === -1) {
+                    // Si el carácter no está en el alfabeto, se mantiene igual
+                    textoDescifrado += char;
+                } else {
+                    // Realizamos la rotación inversa
+                    let nuevaPosicion = (index - nivelRotado + maxRotacion) % maxRotacion;
+                    textoDescifrado += alfabeto[nuevaPosicion];
+                }
+            }
+
+            resultadoDiv.textContent = textoDescifrado;
+        });
     </script>
-
 </body>
 </html>
